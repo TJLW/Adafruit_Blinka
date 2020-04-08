@@ -22,10 +22,10 @@ class Pin:
         self.id = pin_id
         if type(pin_id) is tuple:
             self._num = int(pin_id[1])
-            self._chip = gpiod.Chip(str(pin_id[0]), gpiod.Chip.OPEN_BY_NUMBER)
+            self._chip = gpiod.chip(str(pin_id[0]), gpiod.chip.OPEN_BY_NUMBER)
         else:
             self._num = int(pin_id)
-            self._chip = gpiod.Chip("gpiochip0", gpiod.Chip.OPEN_BY_NAME)
+            self._chip = gpiod.chip("gpiochip0", gpiod.chip.OPEN_BY_NAME)
         self._line = None
 
     def __repr__(self):
@@ -46,7 +46,7 @@ class Pin:
                     if pull == self.PULL_UP:
                         raise NotImplementedError("Internal pullups not supported in libgpiod, use physical resistor instead!")
                     elif pull == self.PULL_DOWN:
-                        raise NotImplementedError("Internal pulldowns not supported in libgpiod, use physical resistor instead!")                    
+                        raise NotImplementedError("Internal pulldowns not supported in libgpiod, use physical resistor instead!")
                     else:
                         raise RuntimeError("Invalid pull for pin: %s" % self.id)
 
