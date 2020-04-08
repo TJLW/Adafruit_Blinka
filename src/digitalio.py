@@ -47,6 +47,8 @@ elif detector.chip.STM32:
     from machine import Pin
 elif detector.board.microchip_mcp2221:
     from adafruit_blinka.microcontroller.mcp2221.pin import Pin
+elif detector.board.ULTRA96:
+    from adafruit_blinka.microcontroller.zynqmp.pin import Pin
 from adafruit_blinka import Enum, ContextManaged
 
 class DriveMode(Enum):
