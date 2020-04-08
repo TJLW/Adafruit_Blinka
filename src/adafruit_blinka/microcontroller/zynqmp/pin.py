@@ -85,4 +85,4 @@ GPIO_13 = Pin(343)
 I2C1_SDA = GPIO_13
 I2C1_SCL = GPIO_12
 
-i2cPorts = ((1, I2C1_SCL, I2C1_SDA), )
+i2cPorts = ((2, I2C1_SCL, I2C1_SDA), )
