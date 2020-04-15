@@ -30,11 +30,17 @@ class Pin:
             if mode == self.IN:
                 self._mode = self.IN
                 # GPIO.setup(self.id, GPIO.IN)
-                self.pynq_gpio = GPIO(self.id, 'in')
+                if self.pynq_gpio == None:
+                    self.pynq_gpio = GPIO(self.id, 'in')
+                else:
+                    self.pynq_gpio.direction = 'in'
             elif mode == self.OUT:
                 self._mode = self.OUT
                 # GPIO.setup(self.id, GPIO.OUT)
-                self.pynq_gpio = GPIO(self.id, 'out')
+                if self.pynq_gpio == None:
+                    self.pynq_gpio = GPIO(self.id, 'out')
+                else:
+                    self.pynq_gpio.direction = 'out'
             else:
                 raise RuntimeError("Invalid mode for pin: %s" % self.id)
         # if pull != None:
