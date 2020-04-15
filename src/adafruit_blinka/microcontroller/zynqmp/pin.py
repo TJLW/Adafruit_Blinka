@@ -25,7 +25,7 @@ class Pin:
     def __eq__(self, other):
         return self.id == other
 
-    def init(self, mode=IN, pull=None):
+    def init(self, mode=None, pull=None):
         if mode != None:
             if mode == self.IN:
                 self._mode = self.IN
