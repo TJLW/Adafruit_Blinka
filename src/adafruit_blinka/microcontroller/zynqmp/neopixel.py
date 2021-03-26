@@ -2,6 +2,7 @@ import time
 import math
 import atexit
 import mmap
+import os
 # from pynq import MMIO
 
 # LED configuration.
