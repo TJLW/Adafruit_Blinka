@@ -26,7 +26,7 @@ class Pin:
         return self.id == other
 
     def init(self, mode=None, pull=None):
-        continue
+        pass
         # if mode != None:
         #     if mode == self.IN:
         #         self._mode = self.IN
@@ -54,7 +54,7 @@ class Pin:
         #         raise RuntimeError("Invalid pull for pin: %s" % self.id)
 
     def value(self, val=None):
-        continue
+        pass
         # if val != None:
         #     if val == self.LOW:
         #         self._value = val
