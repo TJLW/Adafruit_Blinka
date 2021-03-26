@@ -1,19 +1,29 @@
 import time
 import math
 import atexit
-from pynq import MMIO
+import mmap
+# from pynq import MMIO
 
 # LED configuration.
-NEOPIXEL_BASE_ADDRESS =         0x0080002000
-NEOPIXEL_MEM_SIZE =             1024
+NEOPIXEL_BASE_ADDRESS =         0x0080000000
+NEOPIXEL_MEM_SIZE =             2048
 NEOPIXEL_COUNT_REG_OFFSET =     0x0
 NEOPIXEL_REG_0_OFFSET =         0x4
 
 NEOPIXEL_COUNT =                0x1
 
+NUM_PIXEL_OFFSET = 0
+PIXELS_OFFSET = 4
+
+RED_OFFSET = 0
+GREEN_OFFSET = 1
+BLUE_OFFSET = 2
+
 # a 'static' object that we will use to manage our neopixel controller IP
 # we only support one LED strip per raspi
 _neopixel_controller = None
+
+
 
 def neopixel_cleanup():
     global _neopixel_controller
@@ -27,8 +37,14 @@ def neopixel_write(gpio, buf):
 
     if _neopixel_controller is None:
 
-        _neopixel_controller = MMIO(NEOPIXEL_BASE_ADDRESS, NEOPIXEL_MEM_SIZE)
-        _neopixel_controller.write(NEOPIXEL_COUNT_REG_OFFSET, NEOPIXEL_COUNT)
+        devmem = os.open("/dev/mem", os.O_RDWR | os.O_SYNC | os.O_CREAT)
+        _neopixel_controller = mmap.mmap(devmem, NEOPIXEL_MEM_SIZE, flags = mmap.MAP_SHARED, prot = mmap.PROT_WRITE | mmap.PROT_READ, offset = NEOPIXEL_BASE_ADDRESS)
+
+        m.seek(NUM_PIXEL_OFFSET)
+        m.write_byte(NEOPIXEL_COUNT)
+
+        # _neopixel_controller = MMIO(NEOPIXEL_BASE_ADDRESS, NEOPIXEL_MEM_SIZE)
+        # _neopixel_controller.write(NEOPIXEL_COUNT_REG_OFFSET, NEOPIXEL_COUNT)
 
     bpp = 3
     for i in range(len(buf) // bpp):
@@ -36,8 +52,17 @@ def neopixel_write(gpio, buf):
         g = buf[bpp*i+1]
         b = buf[bpp*i+2]
         if bpp == 3:
-            pixel = (r << 16) | (g << 8) | b
+            # pixel = (r << 16) | (g << 8) | b
+            m.seek(PIXELS_OFFSET + RED_OFFSET)
+            m.write_byte(r)
 
-        _neopixel_controller.write(NEOPIXEL_REG_0_OFFSET + (0x4 * i), pixel)
+            m.seek(PIXELS_OFFSET + GREEN_OFFSET)
+            m.write_byte(g)
+
+            m.seek(PIXELS_OFFSET + BLUE_OFFSET)
+            m.write_byte(b)
+
+
+        # _neopixel_controller.write(NEOPIXEL_REG_0_OFFSET + (0x4 * i), pixel)
 
     time.sleep(0.001 * ((len(buf)//100)+1))  # about 1ms per 100 bytes
