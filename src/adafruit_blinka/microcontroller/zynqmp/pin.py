@@ -1,4 +1,4 @@
-from pynq import GPIO
+# from pynq import GPIO
 
 # Pins dont exist in CPython so...lets make our own!
 class Pin:
@@ -26,21 +26,23 @@ class Pin:
         return self.id == other
 
     def init(self, mode=None, pull=None):
-        if mode != None:
-            if mode == self.IN:
-                self._mode = self.IN
-                # GPIO.setup(self.id, GPIO.IN)
-                if self.pynq_gpio != None:
-                    self.pynq_gpio.release()
-                self.pynq_gpio = GPIO(self.id, 'in')
-            elif mode == self.OUT:
-                self._mode = self.OUT
-                # GPIO.setup(self.id, GPIO.OUT)
-                if self.pynq_gpio != None:
-                    self.pynq_gpio.release()
-                self.pynq_gpio = GPIO(self.id, 'out')
-            else:
-                raise RuntimeError("Invalid mode for pin: %s" % self.id)
+        continue
+        # if mode != None:
+        #     if mode == self.IN:
+        #         self._mode = self.IN
+        #         # GPIO.setup(self.id, GPIO.IN)
+        #         if self.pynq_gpio != None:
+        #             self.pynq_gpio.release()
+        #         self.pynq_gpio = GPIO(self.id, 'in')
+        #     elif mode == self.OUT:
+        #         self._mode = self.OUT
+        #         # GPIO.setup(self.id, GPIO.OUT)
+        #         if self.pynq_gpio != None:
+        #             self.pynq_gpio.release()
+        #         self.pynq_gpio = GPIO(self.id, 'out')
+        #     else:
+        #         raise RuntimeError("Invalid mode for pin: %s" % self.id)
+
         # if pull != None:
         #     if self._mode != self.IN:
         #         raise RuntimeError("Cannot set pull resistor on output")
@@ -52,20 +54,21 @@ class Pin:
         #         raise RuntimeError("Invalid pull for pin: %s" % self.id)
 
     def value(self, val=None):
-        if val != None:
-            if val == self.LOW:
-                self._value = val
-                # GPIO.output(self.id, val)
-                self.pynq_gpio.write(val)
-            elif val == self.HIGH:
-                self._value = val
-                # GPIO.output(self.id, val)
-                self.pynq_gpio.write(val)
-            else:
-                raise RuntimeError("Invalid value for pin")
-        else:
-            # return GPIO.input(self.id)
-            return self.pynq_gpio.read()
+        continue
+        # if val != None:
+        #     if val == self.LOW:
+        #         self._value = val
+        #         # GPIO.output(self.id, val)
+        #         self.pynq_gpio.write(val)
+        #     elif val == self.HIGH:
+        #         self._value = val
+        #         # GPIO.output(self.id, val)
+        #         self.pynq_gpio.write(val)
+        #     else:
+        #         raise RuntimeError("Invalid value for pin")
+        # else:
+        #     # return GPIO.input(self.id)
+        #     return self.pynq_gpio.read()
 
 # from adafruit_blinka.microcontroller.generic_linux.libgpiod_pin import Pin
 #
